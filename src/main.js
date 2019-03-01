@@ -6,10 +6,25 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+// elment-ui
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
+
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
+let app = new Vue({
   router,
   components: { App },
   template: '<App/>'
 })
+
+window.mountApp = () => {
+  app.$mount('#app')
+}
+if (process.env.NODE_ENV === 'production') {
+  if (window.STYLE_READY) {
+    window.mountApp()
+  }
+} else {
+  window.mountApp()
+}
