@@ -1,9 +1,16 @@
 import Vue from 'vue';
-import Skeleton from './Skeleton';
+import Skeleton1 from './Skeleton1';
+import Skeleton2 from './Skeleton2';
 
 export default new Vue({
     components: {
-        Skeleton
+        Skeleton1,
+        Skeleton2
     },
-    template: '<skeleton />'
+    template: `
+        <div>
+            <skeleton1 id="skeleton1" style="display:none"/>
+            <skeleton2 id="skeleton2" style="display:none"/>
+        </div>
+    `
 });

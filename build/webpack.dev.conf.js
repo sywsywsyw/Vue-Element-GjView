@@ -8,7 +8,6 @@ const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin')
 const portfinder = require('portfinder')
 
@@ -17,7 +16,10 @@ const PORT = process.env.PORT && Number(process.env.PORT)
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
+    rules: utils.styleLoaders({
+      sourceMap: config.dev.cssSourceMap,
+      usePostCSS: true
+    })
   },
   // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
@@ -26,9 +28,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   devServer: {
     clientLogLevel: 'warning',
     historyApiFallback: {
-      rewrites: [
-        { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
-      ],
+      rewrites: [{
+        from: /.*/,
+        to: path.posix.join(config.dev.assetsPublicPath, 'index.html')
+      }, ],
     },
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
@@ -36,9 +39,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
-    overlay: config.dev.errorOverlay
-      ? { warnings: false, errors: true }
-      : false,
+    overlay: config.dev.errorOverlay ?
+      {
+        warnings: false,
+        errors: true
+      } :
+      false,
     publicPath: config.dev.assetsPublicPath,
     proxy: config.dev.proxyTable,
     quiet: true, // necessary for FriendlyErrorsPlugin
@@ -59,27 +65,30 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true
     }),
-    // copy custom static assets
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, '../static'),
-        to: config.dev.assetsSubDirectory,
-        ignore: ['.*']
-      }
-    ]),
-    new ExtractTextPlugin({
-      filename: utils.assetsPath('css/[name].[contenthash].css'),
-      // Setting the following option to `false` will not extract CSS from codesplit chunks.
-      // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
-      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`,
-      // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
-      allChunks: true,
-    }),
     // inject skeleton content(DOM & CSS) into HTML
     new SkeletonWebpackPlugin({
       webpackConfig: require('./webpack.skeleton.conf'),
-      quiet: true
+      quiet: true,
+      minimize: true,
+      router: {
+        mode: 'hash',
+        routes: [{
+            path: '/page1',
+            skeletonId: 'skeleton1'
+          },
+          {
+            path: '/',
+            skeletonId: 'skeleton2'
+          },
+        ]
+      }
     }),
+    // copy custom static assets
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, '../static'),
+      to: config.dev.assetsSubDirectory,
+      ignore: ['.*']
+    }])
   ]
 })
 
@@ -99,9 +108,9 @@ module.exports = new Promise((resolve, reject) => {
         compilationSuccessInfo: {
           messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
         },
-        onErrors: config.dev.notifyOnErrors
-        ? utils.createNotifierCallback()
-        : undefined
+        onErrors: config.dev.notifyOnErrors ?
+          utils.createNotifierCallback() :
+          undefined
       }))
 
       resolve(devWebpackConfig)

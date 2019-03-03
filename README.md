@@ -1,6 +1,6 @@
-# Element-GjView
+# element-gj
 
-> ElementUI+骨架屏测试
+> A Vue.js project
 
 ## Build Setup
 
@@ -44,12 +44,16 @@ npm i node -sass -S
 npm i sass-loader -S
 
 // 安装骨架屏
-npm i vue-skeleton-webpack-plugin
+
+vue-skeleton-webpack-plugin骨架屏与page-skeleton-webpack-plugin骨架屏生成插件
+
+npm install vue-skeleton-webpack-plugin
+https://blog.csdn.net/zmkyf1993/article/details/82866649
 https://github.com/lavas-project/vue-skeleton-webpack-plugin
-https://xiaoiver.github.io/coding/2017/07/30/为vue项目添加骨架屏.html
 
-https://blog.csdn.net/u012878818/article/details/81216272
-
-
+// 饿了么自动生成骨架屏(不会用)
+npm install --save-dev page-skeleton-webpack-plugin
+npm install --save-dev html-webpack-plugin
+https://github.com/ElemeFE/page-skeleton-webpack-plugin/blob/master/docs/i18n/zh_cn.md
 
 ```
